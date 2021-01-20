@@ -86,14 +86,15 @@ public class MyParticleSystem : SystemBase {
             })
             .ScheduleParallel();
 
+        Dependency.Complete();
         grid.Dispose();
         positions.Dispose();
     }
 
-    const int gridSize = 3;
+    const float gridSize = 2f;
 
     private static int2 ToGrid(float2 pos) {
-        return new int2(math.floor(pos));
+        return new int2(math.floor(pos/gridSize));
     }
 
     private static int GridHash(float2 p) {
