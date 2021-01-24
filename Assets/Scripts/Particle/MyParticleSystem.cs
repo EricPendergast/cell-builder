@@ -12,15 +12,26 @@ using Utilities;
 public class MyParticleSystem : SystemBase {
 
     private EntityQuery hashPositionsQuery;
+    [ReadOnly] public NativeMultiHashMap<int, Translation> grid;
 
     protected override void OnCreate() {
+        grid = new NativeMultiHashMap<int, Translation>(100, Allocator.Persistent);
+    }
+
+    protected override void OnDestroy() {
+        grid.Dispose();
     }
 
     protected override void OnUpdate() {
         int particleCount = hashPositionsQuery.CalculateEntityCount();
 
-        var grid = new NativeMultiHashMap<int, int>(particleCount, Allocator.TempJob);
-        var positions = new NativeArray<Translation>(particleCount, Allocator.TempJob);
+        if (particleCount > grid.Capacity) {
+            int cap = grid.Capacity;
+            grid.Dispose();
+            grid = new NativeMultiHashMap<int, Translation>(math.max(cap*2, particleCount), Allocator.Persistent);
+        } else {
+            grid.Clear();
+        }
 
         var gridWriter = grid.AsParallelWriter();
 
@@ -30,53 +41,9 @@ public class MyParticleSystem : SystemBase {
             .WithStoreEntityQueryInField(ref hashPositionsQuery)
             .ForEach((int entityInQueryIndex, in Translation pos) => {
 
-                gridWriter.Add(GridHash(pos.Value.xy), entityInQueryIndex);
-                positions[entityInQueryIndex] = pos;
+                gridWriter.Add(GridHash(pos.Value.xy), pos);
 
             }).ScheduleParallel();
-
-        Entities
-            .WithName("ResolveCollisions")
-            .WithAll<Particle, CollisionResponse, Translation>()
-            .WithReadOnly(grid)
-            .WithReadOnly(positions)
-            .ForEach((
-                    int entityInQueryIndex,
-                    ref CollisionResponse collisionResponse, 
-                    in Translation pos) => {
-
-                int2 centerGrid = ToGrid(pos.Value.xy);
-
-                foreach (int entityId in new NearbyGridCellIterator<int>(centerGrid, grid)) {
-                    Translation otherPos = positions[entityId];
-                    ParticleMath.ResolveCollision(pos, ref collisionResponse, otherPos);
-                }
-
-            }).ScheduleParallel();
-
-        Entities
-            .WithName("ApplyCollisionResponses")
-            .WithAll<Particle>()
-            .ForEach((ref Translation position, ref Velocity velocity, ref CollisionResponse collision) => {
-                position.Value += math.float3(collision.deltaPosition, 0);
-                velocity.Value += collision.deltaVelocity;
-                collision.deltaPosition = 0;
-                collision.deltaVelocity = 0;
-            })
-            .ScheduleParallel();
-
-        float deltaTime = Time.DeltaTime;
-        Entities
-            .WithName("ApplyVelocity")
-            .WithAll<Particle>()
-            .ForEach((ref Translation position, in Velocity velocity) => {
-                    position.Value += new float3(velocity.Value, 0)*deltaTime;
-            })
-            .ScheduleParallel();
-
-        Dependency.Complete();
-        grid.Dispose();
-        positions.Dispose();
     }
 
     const float gridSize = 2f;
