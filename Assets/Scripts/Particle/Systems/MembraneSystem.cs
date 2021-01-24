@@ -5,14 +5,14 @@ using Unity.Jobs;
 
 using Utilities;
 
-[UpdateAfter(typeof(MyParticleSystem))]
+[UpdateAfter(typeof(ParticleGridSystem))]
 [UpdateBefore(typeof(ApplyCollisionsSystem))]
 [UpdateBefore(typeof(TransformSystemGroup))]
 public class MembraneSystem : SystemBase {
-    MyParticleSystem myParticleSystem;
+    ParticleGridSystem myParticleSystem;
 
     protected override void OnCreate() {
-        myParticleSystem = World.GetOrCreateSystem<MyParticleSystem>();
+        myParticleSystem = World.GetOrCreateSystem<ParticleGridSystem>();
     }
 
     protected override void OnUpdate() {
@@ -26,7 +26,7 @@ public class MembraneSystem : SystemBase {
                     ref CollisionResponse collisionResponse, 
                     in Translation pos) => {
 
-                int2 centerGrid = MyParticleSystem.ToGrid(pos.Value.xy);
+                int2 centerGrid = ParticleGridSystem.ToGrid(pos.Value.xy);
 
                 foreach (Translation otherPos in new NearbyGridCellIterator<Translation>(centerGrid, grid)) {
                     ParticleMath.ResolveCollision(pos, ref collisionResponse, otherPos);

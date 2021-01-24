@@ -2,14 +2,11 @@ using Unity.Collections;
 using Unity.Transforms;
 using Unity.Mathematics;
 using Unity.Entities;
-using Unity.Burst;
 using Unity.Jobs;
-
-using Utilities;
 
 
 [UpdateBefore(typeof(TransformSystemGroup))]
-public class MyParticleSystem : SystemBase {
+public class ParticleGridSystem : SystemBase {
 
     private EntityQuery hashPositionsQuery;
     [ReadOnly] public NativeMultiHashMap<int, Translation> grid;
