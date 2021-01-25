@@ -4,14 +4,14 @@ using Unity.Transforms;
 
 public class ParticleMath {
 
-    public static void ResolveCollision(Translation t1, ref CollisionResponse c1, Translation t2) {
+    public static void ResolveCollision(RigidParticleInfo i1, ref CollisionResponse c1, RigidParticleInfo i2) {
         
-        float radius = .5f;
+        float minDistance = i1.body.radius + i2.body.radius;
 
-        var p2ToP1 = t1.Value.xy - t2.Value.xy;
+        var p2ToP1 = i1.pos.Value.xy - i2.pos.Value.xy;
         float distance = math.length(p2ToP1);
-        if (distance < radius*2) {
-            c1.deltaPosition += math.normalizesafe(p2ToP1)*(radius*2-distance)/2;
+        if (distance < minDistance) {
+            c1.deltaPosition += math.normalizesafe(p2ToP1)*(minDistance-distance)/2;
         }
     }
 }

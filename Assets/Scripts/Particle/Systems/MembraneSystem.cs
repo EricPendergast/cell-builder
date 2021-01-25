@@ -7,7 +7,6 @@ using Utilities;
 
 [UpdateAfter(typeof(ParticleGridSystem))]
 [UpdateBefore(typeof(ApplyCollisionsSystem))]
-[UpdateBefore(typeof(TransformSystemGroup))]
 public class MembraneSystem : SystemBase {
     ParticleGridSystem myParticleSystem;
 
@@ -16,22 +15,33 @@ public class MembraneSystem : SystemBase {
     }
 
     protected override void OnUpdate() {
+        // I don't think this should be necessary, but it prevents errors...
+        Dependency = JobHandle.CombineDependencies(Dependency, myParticleSystem.GetFinalJobHandle());
+        
         var grid = myParticleSystem.grid;
 
         Entities
             .WithName("ResolveCollisions")
-            .WithAll<Particle, CollisionResponse, Translation>()
             .WithReadOnly(grid)
             .ForEach((
                     ref CollisionResponse collisionResponse, 
-                    in Translation pos) => {
+                    in ParticleRigidbody body,
+                    in Translation pos,
+                    in Velocity vel) => {
 
                 int2 centerGrid = ParticleGridSystem.ToGrid(pos.Value.xy);
 
-                foreach (Translation otherPos in new NearbyGridCellIterator<Translation>(centerGrid, grid)) {
-                    ParticleMath.ResolveCollision(pos, ref collisionResponse, otherPos);
+                foreach (RigidParticleInfo otherPos in new NearbyGridCellIterator<RigidParticleInfo>(centerGrid, grid)) {
+                    ParticleMath.ResolveCollision(
+                        new RigidParticleInfo{
+                            body=body,
+                            pos=pos,
+                            vel=vel
+                        },
+                        ref collisionResponse,
+                        otherPos
+                    );
                 }
-
             }).ScheduleParallel();
     }
 }

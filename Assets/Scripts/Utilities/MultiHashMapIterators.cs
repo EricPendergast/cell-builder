@@ -7,20 +7,22 @@ namespace Utilities {
 
     // Treats the hash map like a grid, and itertes over a 3x3 region
     // of buckets, centered at 'centerGrid'.
-    public struct NearbyGridCellIterator<T> where T : struct {
+    public struct NearbyGridCellIterator<T> 
+         where T : struct
+    {
         private int2 centerGrid;
-        private NativeMultiHashMap<int, T> grid;
-        private MultiHashMapIterator<T> it;
+        private NativeMultiHashMap<int2, T> grid;
+        private MultiHashMapIterator<int2, T> it;
         private int o_x, o_y;
 
         public NearbyGridCellIterator<T> GetEnumerator() => this;
 
-        public NearbyGridCellIterator(int2 centerGrid, NativeMultiHashMap<int, T> grid) {
+        public NearbyGridCellIterator(int2 centerGrid, NativeMultiHashMap<int2, T> grid) {
             this.centerGrid = centerGrid;
             this.grid = grid;
             o_x = -1;
             o_y = -1;
-            it = new MultiHashMapIterator<T>(grid, (int)math.hash(centerGrid + new int2(o_x, o_y)));
+            it = new MultiHashMapIterator<int2, T>(grid, centerGrid + new int2(o_x, o_y));
         }
 
         public bool MoveNext() {
@@ -33,7 +35,7 @@ namespace Utilities {
                 if (o_x > 1) {
                     return false;
                 }
-                it = new MultiHashMapIterator<T>(grid, (int)math.hash(centerGrid + new int2(o_x, o_y)));
+                it = new MultiHashMapIterator<int2, T>(grid, centerGrid + new int2(o_x, o_y));
             }
 
             return true;
@@ -43,18 +45,21 @@ namespace Utilities {
     }
 
     // Iterates over one bucket in a multi hash map.
-    public struct MultiHashMapIterator<T> where T : struct {
-        private NativeMultiHashMap<int, T> hashMap;
-        NativeMultiHashMapIterator<int> it;
+    public struct MultiHashMapIterator<U, T> 
+        where T : struct
+        where U : struct, System.IEquatable<U>
+    {
+        private NativeMultiHashMap<U, T> hashMap;
+        NativeMultiHashMapIterator<U> it;
         private bool found;
         public T current;
         private T nextItem;
-        public MultiHashMapIterator<T> GetEnumerator() => this;
+        public MultiHashMapIterator<U, T> GetEnumerator() => this;
 
-        public MultiHashMapIterator(NativeMultiHashMap<int, T> hashMap, int hash) {
+        public MultiHashMapIterator(NativeMultiHashMap<U, T> hashMap, U key) {
             this.hashMap = hashMap;
 
-            found = hashMap.TryGetFirstValue(hash, out nextItem, out it);
+            found = hashMap.TryGetFirstValue(key, out nextItem, out it);
 
             current = default(T);
         }

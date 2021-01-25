@@ -9,7 +9,6 @@ public class ApplyVelocitySystem : SystemBase {
         float deltaTime = Time.DeltaTime;
         Entities
             .WithName("ApplyVelocity")
-            .WithAll<Particle>()
             .ForEach((ref Translation position, in Velocity velocity) => {
                     position.Value += new float3(velocity.Value, 0)*deltaTime;
             })

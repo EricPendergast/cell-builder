@@ -132,12 +132,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 834604793}
-  - component: {fileID: 834604792}
   - component: {fileID: 834604795}
   - component: {fileID: 834604794}
   - component: {fileID: 834604796}
   - component: {fileID: 834604798}
   - component: {fileID: 834604797}
+  - component: {fileID: 834604792}
   m_Layer: 0
   m_Name: right particle
   m_TagString: Untagged
@@ -154,9 +154,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 834604791}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3db5d57cb8e1c966aa820b7dac6bf63f, type: 3}
+  m_Script: {fileID: 11500000, guid: c715792036e507ffe8b336223175e9e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  radius: 0.25
+  mass: 0
 --- !u!4 &834604793
 Transform:
   m_ObjectHideFlags: 0
@@ -275,12 +277,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1211629316}
-  - component: {fileID: 1211629315}
   - component: {fileID: 1211629314}
   - component: {fileID: 1211629313}
   - component: {fileID: 1211629312}
   - component: {fileID: 1211629317}
   - component: {fileID: 1211629318}
+  - component: {fileID: 1211629315}
   m_Layer: 0
   m_Name: left particle
   m_TagString: Untagged
@@ -359,9 +361,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1211629311}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3db5d57cb8e1c966aa820b7dac6bf63f, type: 3}
+  m_Script: {fileID: 11500000, guid: c715792036e507ffe8b336223175e9e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  radius: 0.5
+  mass: 1
 --- !u!4 &1211629316
 Transform:
   m_ObjectHideFlags: 0
