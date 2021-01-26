@@ -14,7 +14,7 @@ public struct RigidParticleInfo {
 public class ParticleGridSystem : SystemBase {
 
     private EntityQuery hashPositionsQuery;
-    [ReadOnly] public NativeMultiHashMap<int2, RigidParticleInfo> grid;
+    public NativeMultiHashMap<int2, RigidParticleInfo> grid;
 
     protected override void OnCreate() {
         grid = new NativeMultiHashMap<int2, RigidParticleInfo>(100, Allocator.Persistent);
