@@ -134,7 +134,6 @@ GameObject:
   - component: {fileID: 834604793}
   - component: {fileID: 834604795}
   - component: {fileID: 834604794}
-  - component: {fileID: 834604796}
   - component: {fileID: 834604798}
   - component: {fileID: 834604797}
   - component: {fileID: 834604792}
@@ -222,19 +221,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &834604796
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 834604791}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea7d7495833204790ba1d3a8755397f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ConversionMode: 0
 --- !u!114 &834604797
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -279,7 +265,6 @@ GameObject:
   - component: {fileID: 1211629316}
   - component: {fileID: 1211629314}
   - component: {fileID: 1211629313}
-  - component: {fileID: 1211629312}
   - component: {fileID: 1211629317}
   - component: {fileID: 1211629318}
   - component: {fileID: 1211629315}
@@ -290,19 +275,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1211629312
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1211629311}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea7d7495833204790ba1d3a8755397f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ConversionMode: 0
 --- !u!33 &1211629313
 MeshFilter:
   m_ObjectHideFlags: 0

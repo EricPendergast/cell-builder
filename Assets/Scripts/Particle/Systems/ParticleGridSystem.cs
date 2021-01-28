@@ -8,6 +8,7 @@ public struct RigidParticleInfo {
     public ParticleRigidbody body;
     public Translation pos;
     public Velocity vel;
+    public Entity entity;
 }
 
 [UpdateBefore(typeof(TransformSystemGroup))]
@@ -27,31 +28,30 @@ public class ParticleGridSystem : SystemBase {
     protected override void OnUpdate() {
         int particleCount = hashPositionsQuery.CalculateEntityCount();
 
-        PrepareGridForParticles(ref grid, particleCount);
+        Resize(ref grid, particleCount);
+        grid.Clear();
 
         var gridWriter = grid.AsParallelWriter();
 
         Entities
             .WithName("HashPositions")
             .WithStoreEntityQueryInField(ref hashPositionsQuery)
-            .ForEach((in ParticleRigidbody body, in Translation pos, in Velocity vel) => {
+            .ForEach((in Entity entity, in ParticleRigidbody body, in Translation pos, in Velocity vel) => {
 
                 gridWriter.Add(ToGrid(pos.Value.xy),
                     new RigidParticleInfo{
-                        body=body, pos=pos, vel=vel
+                        body=body, pos=pos, vel=vel, entity=entity
                     }
                 );
 
             }).ScheduleParallel();
     }
 
-    private static void PrepareGridForParticles<T>(ref NativeMultiHashMap<int2, T> grid, int particleCount) where T : struct {
+    private static void Resize<T>(ref NativeMultiHashMap<int2, T> grid, int particleCount) where T : struct {
         if (particleCount > grid.Capacity) {
             int cap = grid.Capacity;
             grid.Dispose();
             grid = new NativeMultiHashMap<int2, T>(math.max(cap*2, particleCount), Allocator.Persistent);
-        } else {
-            grid.Clear();
         }
     }
 
