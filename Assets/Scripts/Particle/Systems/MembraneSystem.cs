@@ -15,7 +15,6 @@ public class MembraneSystem : SystemBase {
     }
 
     protected override void OnUpdate() {
-        // I don't think this should be necessary, but it prevents errors...
         Dependency = JobHandle.CombineDependencies(Dependency, myParticleSystem.GetFinalJobHandle());
         
         var grid = myParticleSystem.grid;
