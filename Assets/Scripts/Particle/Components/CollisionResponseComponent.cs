@@ -5,5 +5,6 @@ using Unity.Entities;
 public struct CollisionResponse : IComponentData {
     public float2 deltaVelocity;
     public float2 deltaPosition;
+    public float2 force;
 }
 

@@ -19,6 +19,8 @@ public class MembraneSystem : SystemBase {
         
         var grid = myParticleSystem.grid;
 
+        var gelSettings = GelSettings.Instance.data;
+
         Entities
             .WithName("ResolveCollisions")
             .WithReadOnly(grid)
@@ -31,16 +33,18 @@ public class MembraneSystem : SystemBase {
                 int2 centerGrid = ParticleGridSystem.ToGrid(pos.Value.xy);
 
                 foreach (RigidParticleInfo otherPos in new NearbyGridCellIterator<RigidParticleInfo>(centerGrid, grid)) {
-                    ParticleMath.ResolveCollision(
+                    ParticleMath.GelPhysics(
                         new RigidParticleInfo{
                             body=body,
                             pos=pos,
                             vel=vel
                         },
                         ref collisionResponse,
-                        otherPos
+                        otherPos,
+                        gelSettings
                     );
                 }
             }).ScheduleParallel();
     }
+
 }

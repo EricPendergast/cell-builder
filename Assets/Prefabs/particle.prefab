@@ -97,7 +97,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Value:
-    x: 1
+    x: 0
     y: 0
 --- !u!114 &3011689190338237155
 MonoBehaviour:
@@ -115,6 +115,9 @@ MonoBehaviour:
     x: 0
     y: 0
   deltaPosition:
+    x: 0
+    y: 0
+  force:
     x: 0
     y: 0
 --- !u!114 &3011689190338237158

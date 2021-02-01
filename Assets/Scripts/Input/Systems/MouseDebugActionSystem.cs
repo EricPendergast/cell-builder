@@ -25,6 +25,9 @@ public class MouseDebugActionSystem : SystemBase {
             World.EntityManager.SetComponentData(
                 mouseData.selected,
                 new Translation{Value=mousePosition});
+            World.EntityManager.SetComponentData(
+                mouseData.selected,
+                new Velocity{});
         }
     }
 }
