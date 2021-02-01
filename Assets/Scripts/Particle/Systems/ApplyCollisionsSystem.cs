@@ -5,7 +5,7 @@ using Unity.Jobs;
 
 
 [UpdateBefore(typeof(ApplyVelocitySystem))]
-[UpdateBefore(typeof(TransformSystemGroup))]
+[UpdateInGroup(typeof(ParticleSystemGroup))]
 public class ApplyCollisionsSystem : SystemBase {
     protected override void OnUpdate() {
         

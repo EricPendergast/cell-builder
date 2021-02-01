@@ -10,6 +10,7 @@ using Utilities;
 // proper values.
 [UpdateAfter(typeof(ParticleGridSystem))]
 [UpdateBefore(typeof(ApplyCollisionsSystem))]
+[UpdateInGroup(typeof(ParticleSystemGroup))]
 public class MouseInputSystem : SystemBase {
     ParticleGridSystem myParticleSystem;
 

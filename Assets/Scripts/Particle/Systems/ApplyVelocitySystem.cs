@@ -3,7 +3,7 @@ using Unity.Mathematics;
 using Unity.Entities;
 using Unity.Jobs;
 
-[UpdateBefore(typeof(TransformSystemGroup))]
+[UpdateInGroup(typeof(ParticleSystemGroup))]
 public class ApplyVelocitySystem : SystemBase {
     protected override void OnUpdate() {
         float deltaTime = Time.DeltaTime;

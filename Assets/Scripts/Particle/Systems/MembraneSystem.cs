@@ -7,6 +7,7 @@ using Utilities;
 
 [UpdateAfter(typeof(ParticleGridSystem))]
 [UpdateBefore(typeof(ApplyCollisionsSystem))]
+[UpdateInGroup(typeof(ParticleSystemGroup))]
 public class MembraneSystem : SystemBase {
     ParticleGridSystem myParticleSystem;
 
