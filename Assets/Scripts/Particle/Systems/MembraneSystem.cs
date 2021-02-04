@@ -8,6 +8,7 @@ using Utilities;
 [UpdateAfter(typeof(ParticleGridSystem))]
 [UpdateBefore(typeof(ApplyCollisionsSystem))]
 [UpdateInGroup(typeof(ParticleSystemGroup))]
+[DisableAutoCreation]
 public class MembraneSystem : SystemBase {
     ParticleGridSystem myParticleSystem;
 

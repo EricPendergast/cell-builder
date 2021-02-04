@@ -41,14 +41,16 @@ public class ParticleMath {
         c1.deltaPosition += ParticleMath.SolidCollision(i1.pos.xy(), i2.pos.xy(), (i1.body.radius + i2.body.radius)*s.solidCoreMultiplier);
     }
 
+    // Note that this damps velocity in all components (NOT just in the
+    // component parallel to the spring).
     // Using the equation F = -k*x - b*v
     // Returns the force on p1
     public static float2 DampedSpringForce(float2 p1, float2 v1, float2 p2, float2 v2, float springLength, float k, float damping) {
         var p1ToP2 = p2 - p1;
         var dist = math.length(p1ToP2);
-        var positionDifference = math.normalizesafe(p1ToP2)*(springLength - dist);
-        var velocityDifference = math.projectsafe(p1ToP2, v2 - v1);
+        var positionDifference = math.normalizesafe(p1ToP2)*(dist - springLength);
+        var velocityDifference = v2 - v1;
 
-        return -k*(positionDifference) - damping*(velocityDifference);
+        return k*(positionDifference) + damping*(velocityDifference);
     }
 }

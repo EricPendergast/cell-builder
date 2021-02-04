@@ -9,8 +9,7 @@ using Utilities;
 // This system populates the singleton MouseComponent with the
 // proper values.
 [UpdateAfter(typeof(ParticleGridSystem))]
-[UpdateBefore(typeof(ApplyCollisionsSystem))]
-[UpdateInGroup(typeof(ParticleSystemGroup))]
+[UpdateInGroup(typeof(BeforeApplyVelocityGroup))]
 public class MouseInputSystem : SystemBase {
     ParticleGridSystem myParticleSystem;
 
@@ -25,6 +24,7 @@ public class MouseInputSystem : SystemBase {
 
         var mouse = Mouse.current;
         var mouseData = GetSingleton<MouseComponent>();
+        mouseData.previousMouseWorldPosition = mouseData.mouseWorldPosition;
         mouseData.mouseWorldPosition = (Vector2)Camera.main.ScreenToWorldPoint(mouse.position.ReadValue());
 
         if (mouse.leftButton.wasPressedThisFrame) {

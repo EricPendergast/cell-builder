@@ -11,7 +11,7 @@ public struct RigidParticleInfo {
     public Entity entity;
 }
 
-[UpdateInGroup(typeof(ParticleSystemGroup))]
+[UpdateInGroup(typeof(BeforeApplyVelocityGroup))]
 public class ParticleGridSystem : SystemBase {
 
     private EntityQuery hashPositionsQuery;

@@ -6,6 +6,7 @@ using Unity.Jobs;
 
 [UpdateBefore(typeof(ApplyVelocitySystem))]
 [UpdateInGroup(typeof(ParticleSystemGroup))]
+[DisableAutoCreation]
 public class ApplyCollisionsSystem : SystemBase {
     protected override void OnUpdate() {
         
